@@ -14,7 +14,7 @@ import androidx.compose.ui.window.application
 @Composable
 @Preview
 fun App() {
-    var text by remember { mutableStateOf("Hello, World!") }
+/*    var text by remember { mutableStateOf("Hello, World!") }
 
     MaterialTheme {
         Button(onClick = {
@@ -22,11 +22,15 @@ fun App() {
         }) {
             Text(text)
         }
-    }
+    }*/
 }
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication) {
         App()
     }
+}
+
+fun newText() {
+    Text("New text")
 }
