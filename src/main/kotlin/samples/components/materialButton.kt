@@ -1,18 +1,17 @@
-package samples
+package samples.neco_ru
 
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 
 
 @Composable
-fun addButton( text: String): String{
+fun addButton() {
+    var text by remember { mutableStateOf("Переключить график") }
     MaterialTheme {
         Button(onClick = {
-            text = "Hello, Desktop!"
+            text = "График переключен"
         }) {
             Text(text)
         }

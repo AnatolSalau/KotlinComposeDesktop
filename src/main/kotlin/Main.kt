@@ -15,19 +15,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import samples.addColumn
-import samples.addRow
+import samples.charts.drawLineChart
+import samples.neco_ru.addButton
+import samples.neco_ru.addColumn
+import samples.neco_ru.addRow
+import samples.neco_ru.listItem
+import java.io.File
 
 @Composable
-@Preview()
+@Preview
 fun App() {
-    var text by remember { mutableStateOf("Hello, World!") }
-    addRow()
-    addColumn()
-
+    listItem("Name", "Prof");
 }
 
 fun main() = application {
@@ -35,5 +38,7 @@ fun main() = application {
         App()
     }
 }
+
+
 
 
