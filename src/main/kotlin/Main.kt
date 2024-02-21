@@ -18,16 +18,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import samples.addButton
 import samples.addColumn
 import samples.addRow
 
 @Composable
 @Preview()
 fun App() {
-    var text by remember { mutableStateOf("Hello, World!") }
+    addButton()
     addRow()
     addColumn()
-
 }
 
 fun main() = application {
