@@ -14,6 +14,7 @@ Explanation
 KMP visualization
 
     https://cmps-people.ok.ubc.ca/ylucet/DS/KnuthMorrisPratt.html
+    https://www.youtube.com/watch?v=pu2aO_3R118&ab_channel=GBhat
 
 Habr links
 

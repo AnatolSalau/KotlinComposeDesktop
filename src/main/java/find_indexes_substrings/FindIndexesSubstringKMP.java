@@ -1,5 +1,6 @@
 package find_indexes_substrings;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,10 +27,10 @@ import java.util.List;
 public class FindIndexesSubstringKMP {
       public static void main(String[] args) {
             FindIndexesSubstringKMP findIndexesSubstringPower = new FindIndexesSubstringKMP();
-/*            findIndexesSubstringPower.test1();
-            findIndexesSubstringPower.test2();
-            findIndexesSubstringPower.test3();*/
-            findIndexesSubstringPower.testPrefixFunction();
+            //findIndexesSubstringPower.test1();
+            //findIndexesSubstringPower.test2();
+            findIndexesSubstringPower.test3();
+            //findIndexesSubstringPower.testPrefixFunction();
       }
 
       private void test1() {
@@ -113,10 +114,37 @@ public class FindIndexesSubstringKMP {
       /**
        *    O(n+m)
        */
-      private List<Integer> getIndexesKMP(String text, String sample) {
-            List<Integer> answer = new LinkedList<>();
+      /*
+      aabaabaaaaaabaabaabaabbaaab
+      aabaab
 
-            return answer;
+       */
+      private List<Integer> getIndexesKMP(String text, String sample) {
+            ArrayList<Integer> found = new ArrayList<>();
+
+            int[] prefixFunc = getPrefixTable(sample);
+
+            int t = 0;
+            int s = 0;
+
+            while (t < text.length()) {
+                  if (sample.charAt(s) == text.charAt(t)) {
+                        s++;
+                        t++;
+                  }
+                  if (s == sample.length()) {
+                        found.add(t - s);
+                        s = prefixFunc[s - 1];
+                  } else if (t < text.length() && sample.charAt(s) != text.charAt(t)) {
+                        if (s != 0) {
+                              s = prefixFunc[s - 1];
+                        } else {
+                              t = t + 1;
+                        }
+                  }
+            }
+
+            return found;
       }
       /*
             sample = a a b a a b
@@ -152,6 +180,7 @@ public class FindIndexesSubstringKMP {
  sample = a a b a a
  a a b a a
  a a b a a
+
  0 0 0 0 0
    a a b a a
  0 1 0 0 0
@@ -165,20 +194,21 @@ public class FindIndexesSubstringKMP {
             char[] text = sample.toCharArray();
             int[] table = new int[text.length];
 
-            int i = 1;
-            int s = 0;
+            for (int i = 1; i < text.length; i++) {
+                  int s = 0;//index in sample
+                  while (s < text.length) {
+                        int t = i + s; //index in text
 
-            while (i < text.length) {
-                 int t = i + s;
+                        if (t >= text.length) break;// check boundary of array
 
-                 if (text[t] == text[s]) {
-                       table[i] = s + 1;
-                       s++;
-                 } else {
-                       s = 0;
-                       table[i] = s;
-                       i++;
-                 }
+                        if (text[t] == text[s]) {//compare char from text with char from sample
+
+                              table[t] = Math.max(table[t], s + 1);//add only max prefix
+                              s++;
+                        } else { //if char different move sample forward
+                              break;
+                        }
+                  }
             }
             return table;
       }

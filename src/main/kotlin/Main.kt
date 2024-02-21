@@ -21,6 +21,7 @@ import androidx.compose.ui.window.application
 import samples.addButton
 import samples.addColumn
 import samples.addRow
+import samples.drawLineChart
 
 @Composable
 @Preview()
@@ -28,6 +29,7 @@ fun App() {
     addButton()
     addRow()
     addColumn()
+    drawLineChart()
 }
 
 fun main() = application {

@@ -8,10 +8,10 @@ import androidx.compose.runtime.*
 
 @Composable
 fun addButton() {
-    var text by remember { mutableStateOf("Hello, World!") }
+    var text by remember { mutableStateOf("Переключить график") }
     MaterialTheme {
         Button(onClick = {
-            text = "Hello, Desktop!"
+            text = "График переключен"
         }) {
             Text(text)
         }

@@ -30,9 +30,9 @@ import androidx.compose.ui.unit.dp
             verticalAlignment = Alignment.CenterVertically
 
         ) {
-            Text("Hello")
-            Text("Anatoly")
-            Text("Vika")
+            Text("Left")
+            Text("Middle")
+            Text("Right")
         }
     }
 
@@ -51,8 +51,8 @@ import androidx.compose.ui.unit.dp
             horizontalAlignment = Alignment.CenterHorizontally
 
         ) {
-            Text("Hello")
-            Text("Anatoly")
-            Text("Vika")
+            Text("Top")
+            Text("Middle")
+            Text("Bottom")
         }
     }
