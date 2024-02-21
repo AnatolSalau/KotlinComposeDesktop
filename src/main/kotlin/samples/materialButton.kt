@@ -9,9 +9,7 @@ import androidx.compose.runtime.remember
 
 
 @Composable
-fun addButton( text: String) {
-
-
+fun addButton( text: String): String{
     MaterialTheme {
         Button(onClick = {
             text = "Hello, Desktop!"
