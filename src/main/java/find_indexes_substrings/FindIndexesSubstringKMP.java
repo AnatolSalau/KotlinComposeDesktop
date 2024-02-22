@@ -29,7 +29,8 @@ public class FindIndexesSubstringKMP {
             FindIndexesSubstringKMP findIndexesSubstringPower = new FindIndexesSubstringKMP();
             //findIndexesSubstringPower.test1();
             //findIndexesSubstringPower.test2();
-            findIndexesSubstringPower.test3();
+            //findIndexesSubstringPower.test3();
+            findIndexesSubstringPower.test4();
             //findIndexesSubstringPower.testPrefixFunction();
       }
 
@@ -78,6 +79,21 @@ public class FindIndexesSubstringKMP {
             System.out.println();
       }
 
+      private void test4() {
+            String text = "abcabab abababaabac";
+            String sample = "ababaaba";
+            String expect = "10";
+            List<Integer> indexesSubstring = getIndexesKMP(text, sample);
+
+            System.out.println("Test 4");
+            System.out.println("Text : " + text);
+            System.out.println("Sample : " + sample);
+            System.out.println("Sample prefix table : " + Arrays.toString(getPrefixTable(sample)));
+            System.out.println("Expect : " + expect);
+            System.out.println("Answer : " + indexesSubstring);
+            System.out.println();
+      }
+
       private void testPrefixFunction() {
             String sample1 = "aabaa";
             int[] prefixTable = getPrefixTable(sample1);
@@ -115,9 +131,62 @@ public class FindIndexesSubstringKMP {
        *    O(n+m)
        */
       /*
-      aabaabaaaaaabaabaabaabbaaab
-      aabaab
 
+      text = abcabab abababaabac
+      sample = ababaaba
+               0  1  2  3  4  5  6  7
+      table = [0, 0, 1, 2, 3, 1, 2, 3]
+
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 : t (text index)
+a b c a b a b _ a b a  b  a  b  a  a  b  a  c
+. . t
+. . s
+0 1 2 3 4 5 6 7 : s (sample index)
+a b a b a a b a  -> c != a -> s = table[s - 1] = table[2 - 1] = 0
+    t
+    s
+    0 1 2 3 4 5 6 7
+    a b a b a a b a -> c != a && s == 0 move -> forward
+      t . . . t
+      s . . . s
+      0 1 2 3 4 5 6 7
+      a b a b a a b a -> _ != a -> s = table[s - 1] = table[4 - 1] = 2
+              t
+              s
+          0 1 2 3 4 5 6 7
+          a b a b a a b a -> _ != a -> s = table[s - 1] = table[2 - 1] = 0
+              t
+              s
+              0 1 2 3 4 5 6 7
+              a b a b a a b a -> _ != a && s == 0 move -> forward
+
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 : t (text index)
+a b c a b a b _ a b a  b  a  b  a  a  b  a    c
+                t . .  .  .  t
+                s . .  .  .  s
+                0 1 2  3  4  5  6  7
+                a b a  b  a  a  b  a -> b != a -> s = table[s - 1] = table[5 - 1] = 3
+
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 : t (text index)
+a b c a b a b _ a b a  b  a  b  a  a  b  a    c
+                             t  .  .  .  t
+                             s  .  .  .  s
+                    0  1  2  3  4  5  6  7
+                    a  b  a  b  a  a  b  a - > a == a && s == last index in sample -> add to result
+                                               s = table[s - 1] = table[7 - 1] = 1
+                                         t
+                                         s
+                                      0  1  2  3  4  5  6  7
+                                      a  b  a  b  a  a  b  a -> a != b -> s = table[s - 1] = table[1 - 1] = 0
+                                         t    t
+                                         s    s
+                                         0    1  2  3  4  5  6  7
+                                         a    b  a  b  a  a  b  a -> c != b && s == 0 -> move forward
+                                              t
+                                              s
+                                              0    1  2  3  4  5  6  7
+                                              a    b  a  b  a  a  b  a -> c != b && s == 0 -> move forward
+                                              t >= text length - exit from program
        */
       private List<Integer> getIndexesKMP(String text, String sample) {
             ArrayList<Integer> found = new ArrayList<>();
