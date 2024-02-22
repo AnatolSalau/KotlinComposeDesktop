@@ -33,7 +33,6 @@ fun listItem(name: String, prof: String) {
                     .fillMaxWidth()
                     .clickable { defaultText = "AfterClick" },
                 elevation = 5.dp,
-
             ) {
                 Box(
                 ) {
@@ -145,7 +144,6 @@ fun listItem(name: String, prof: String) {
                 }
             }
         }
-
     }
 }
 

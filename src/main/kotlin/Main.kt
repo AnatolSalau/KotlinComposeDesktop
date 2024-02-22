@@ -14,11 +14,12 @@ import samples.charts.drawLinearTransactionsChart
 import samples.neco_ru.addColumn
 import samples.neco_ru.addRow
 import samples.neco_ru.listItem
+import samples.zoom.listItemWithZoom
 
 @Composable
 @Preview
 fun app() {
-    listItem("Name", "Prof");
+    listItemWithZoom("Name", "Prof");
     //drawLineChart()
     //addRow()
     //addColumn()
