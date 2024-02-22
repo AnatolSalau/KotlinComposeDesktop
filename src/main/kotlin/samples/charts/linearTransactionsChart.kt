@@ -1,5 +1,6 @@
 package samples.charts
 
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,6 +29,7 @@ data class TransactionRate(
 )
 
 @Composable
+@Preview
 fun drawLinearTransactionsChart(
     modifier: Modifier = Modifier,
     transactionsPerSecond: TransactionsPerSecond

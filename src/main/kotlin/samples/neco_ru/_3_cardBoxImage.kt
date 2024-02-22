@@ -4,19 +4,16 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
-import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.graphics.toComposeImageBitmap
-
 import androidx.compose.ui.unit.dp
-import java.io.File
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 
@@ -24,27 +21,132 @@ import androidx.compose.ui.res.painterResource
 @Composable
 @Preview
 fun listItem(name: String, prof: String) {
+    var defaultText by remember { mutableStateOf("Переключить график") }
     MaterialTheme {
-        Card(
-            modifier = Modifier.fillMaxWidth()
-                .padding(10.dp),
-            shape = RoundedCornerShape(15.dp),
-            elevation = 5.dp
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(5.dp)
         ) {
-            Box(
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { defaultText = "AfterClick" },
+                elevation = 5.dp,
 
             ) {
-                Image(painter = painterResource("erythrocytes.png"),
-                    contentDescription = "image",
-                    imageModifier,
-                    contentScale = ContentScale.Fit
-                )
+                Box(
+                ) {
+                    Row(
+                        modifier = Modifier,
+                        verticalAlignment = Alignment.CenterVertically
+
+                    ) {
+                        Image(
+                            painter = painterResource("erythrocytes.png"),
+                            contentDescription = "image",
+                            contentScale = ContentScale.Fit,
+                            alignment = Alignment.CenterStart,
+                            modifier = Modifier.height(40.dp).padding(5.dp)
+                        )
+                        Column{
+                            Text(text = name)
+                            Text(text = prof)
+                        }
+                        Text(text = defaultText)
+                    }
+                }
+            }
+            Spacer(Modifier.size(5.dp))
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { defaultText = "AfterClick" },
+                elevation = 5.dp
+            ) {
+                Box(
+                ) {
+                    Row(
+                        modifier = Modifier,
+                        verticalAlignment = Alignment.CenterVertically
+
+                    ) {
+                        Image(
+                            painter = painterResource("erythrocytes.png"),
+                            contentDescription = "image",
+                            contentScale = ContentScale.Fit,
+                            alignment = Alignment.CenterStart,
+                            modifier = Modifier.height(40.dp).padding(5.dp)
+                        )
+                        Column{
+                            Text(text = name)
+                            Text(text = prof)
+                        }
+                        Text(text = defaultText)
+                    }
+                }
+            }
+            Spacer(Modifier.size(5.dp))
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { defaultText = "AfterClick" },
+                elevation = 5.dp
+            ) {
+                Box(
+                ) {
+                    Row(
+                        modifier = Modifier,
+                        verticalAlignment = Alignment.CenterVertically
+
+                    ) {
+                        Image(
+                            painter = painterResource("erythrocytes.png"),
+                            contentDescription = "image",
+                            contentScale = ContentScale.Fit,
+                            alignment = Alignment.CenterStart,
+                            modifier = Modifier.height(40.dp).padding(5.dp)
+                        )
+                        Column{
+                            Text(text = name)
+                            Text(text = prof)
+                        }
+                        Text(text = defaultText)
+                    }
+                }
+            }
+            Spacer(Modifier.size(5.dp))
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { defaultText = "AfterClick" },
+                elevation = 5.dp
+            ) {
+                Box(
+                ) {
+                    Row(
+                        modifier = Modifier,
+                        verticalAlignment = Alignment.CenterVertically
+
+                    ) {
+                        Image(
+                            painter = painterResource("erythrocytes.png"),
+                            contentDescription = "image",
+                            contentScale = ContentScale.Fit,
+                            alignment = Alignment.CenterStart,
+                            modifier = Modifier.height(40.dp).padding(5.dp)
+                        )
+                        Column{
+                            Text(text = name)
+                            Text(text = prof)
+                        }
+                        Text(text = defaultText)
+                    }
+                }
             }
         }
+
     }
 }
-val imageModifier = Modifier
-    .height(240.dp)
-    .fillMaxWidth()
-    .clip(RoundedCornerShape(12.dp))
+
 
