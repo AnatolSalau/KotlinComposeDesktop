@@ -8,6 +8,17 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 
+val transactionRateList: List<TransactionRate> = listOf(
+    TransactionRate(5,8.0),
+    TransactionRate(3,4.0),
+    TransactionRate(6,9.0),
+    TransactionRate(1,4.0),
+    TransactionRate(3,4.0),
+    TransactionRate(3,5.0)
+)
+val transactionsPerSecond: TransactionsPerSecond = TransactionsPerSecond(10.0, transactionRateList)
+//drawLinearTransactionsChart(modifier = Modifier.fillMaxSize(), transactionsPerSecond )
+
 /**
  * Represents a group of Transactions
  * @param maxTransaction the max transaction value in the list of transactions previously calculated in some repository.
