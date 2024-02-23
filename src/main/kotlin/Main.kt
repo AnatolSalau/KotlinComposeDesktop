@@ -14,12 +14,12 @@ import samples.charts.drawLinearTransactionsChart
 import samples.neco_ru.addColumn
 import samples.neco_ru.addRow
 import samples.neco_ru.listItem
-import samples.zoom.listItemWithZoom
+
 
 @Composable
 @Preview
 fun app() {
-    listItemWithZoom("Name", "Prof");
+
     //drawLineChart()
     //addRow()
     //addColumn()
@@ -33,7 +33,7 @@ fun app() {
         TransactionRate(3,5.0)
     )
     val transactionsPerSecond: TransactionsPerSecond = TransactionsPerSecond(10.0, transactionRateList)
-    //drawLinearTransactionsChart(modifier = Modifier.fillMaxSize(), transactionsPerSecond )
+    drawLinearTransactionsChart(modifier = Modifier.fillMaxSize(), transactionsPerSecond )
 }
 
 fun main() = application {
