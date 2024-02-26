@@ -55,7 +55,9 @@ fun xyDoubleTapCoordinates() {
         Text(yOffset.toString())
     }
 }
+/*
 
+ */
 @Composable
 fun xyTapCoordinates() {
     var xOffset by remember { mutableStateOf(0f) }
