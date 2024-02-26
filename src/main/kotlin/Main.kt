@@ -7,6 +7,7 @@ import samples.gestures.drawContextMenu
 import samples.gestures.xyDoubleTapCoordinates
 import samples.gestures.xyTapCoordinates
 import samples.gestures.xyTapWithDragCoordinates
+import samples.gestures.dragInteractionSample
 
 
 @Composable
@@ -16,8 +17,12 @@ fun app() {
     //listItem(name = "name", prof = "surname")
     //xOffsetDragDemo();
     //xyPointerInputDrag()
-    xyTapWithDragCoordinates()
+    //xyTapWithDragCoordinates()
     //drawContextMenu()
+    //xyTapCoordinates()
+    //xyTapWithDragCoordinates()
+    //dragInteractionSample()
+    xyTapWithDragCoordinates()
 }
 
 fun main() = application {
