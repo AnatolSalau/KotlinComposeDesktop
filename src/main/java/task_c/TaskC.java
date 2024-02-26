@@ -60,7 +60,23 @@ public class TaskC {
                                                             l           r
        */
       private int[] removeDuplicatesByLoop(int[] numbers) {
-            return new int[0];
+
+            int l = 0;
+            int r = 1;
+            while (r < numbers.length) {
+                  if (numbers[l] != numbers[r]) { // left and right are equal
+
+                  } else {// left and ri
+
+                  }
+            }
+
+            int[] result = new int[l]; // create result with size l
+            for (int i = 0; i < l; i++) {//fill result
+                  result[i] = numbers[i];
+            }
+
+            return result;
       }
       private int[] removeDuplicatesBySet(int[] numbers) {
             return new int[0];
