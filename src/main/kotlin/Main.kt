@@ -3,11 +3,10 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import samples.gestures.drawContextMenu
-import samples.gestures.xyDoubleTapCoordinates
-import samples.gestures.xyTapCoordinates
-import samples.gestures.xyTapWithDragCoordinates
-import samples.gestures.dragInteractionSample
+import samples.components.drawHollowRectangular
+import samples.components.drawRectangularByDragMouse
+import samples.components.drawSolidRectangular
+import samples.components.drawStrokeRectangular
 
 
 @Composable
@@ -22,7 +21,10 @@ fun app() {
     //xyTapCoordinates()
     //xyTapWithDragCoordinates()
     //dragInteractionSample()
-    xyTapWithDragCoordinates()
+    //drawSolidRectangular()
+    //drawHollowRectangular()
+    //drawStrokeRectangular()
+    drawRectangularByDragMouse()
 }
 
 fun main() = application {
