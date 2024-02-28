@@ -116,12 +116,14 @@ fun drawRectangularByDragMouse() {
                 },
                 onDrag = { change: PointerInputChange, dragAmount: Offset ->
                     run {
-                        zoomWidth = 0f
-                        zoomHeight = 0f
                         xTap += dragAmount.x
                         yTap += dragAmount.y
 
-                        fun calculateCoordinates(dragCoordinate:Float, tapCoordinate: Float, minValue: Float): Float {
+                        fun calculateCoordinates(
+                            dragCoordinate: Float,
+                            tapCoordinate: Float,
+                            minValue: Float
+                        ): Float {
                             val size = -(dragCoordinate - tapCoordinate)
 
                             if (size.absoluteValue != dragCoordinate && size.absoluteValue != tapCoordinate && size.absoluteValue > minValue) {
@@ -130,6 +132,7 @@ fun drawRectangularByDragMouse() {
                                 return 0f
                             }
                         }
+
                         zoomWidth = calculateCoordinates(xDragStart, xTap, MIN_ZOOM_SIZE)
                         zoomHeight = calculateCoordinates(yDragStart, yTap, MIN_ZOOM_SIZE)
 
@@ -152,7 +155,6 @@ fun drawRectangularByDragMouse() {
                     }
                 },
                 onDragEnd = {
-
                     coroutineScope.launch {
                         interaction?.run {
                             interactionSource.emit(DragInteraction.Stop(this))
@@ -163,26 +165,26 @@ fun drawRectangularByDragMouse() {
             )
         }
     ) {
-            Canvas(
-                modifier = Modifier
-            ) {
-                drawRoundRect(
-                    color = Color(zoomColorULong),
-                    size = Size(
-                        width = zoomWidth,
-                        height = zoomHeight
-                    ),
-                    topLeft = Offset(
-                        zoomXLeft,
-                        zoomYLeft
-                    ),
-                    cornerRadius = CornerRadius(10f),
-                    style = Stroke(
-                        width = 4f,
-                        pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f), 5f),
-                    ),
-                )
-            }
+        Canvas(
+            modifier = Modifier
+        ) {
+            drawRoundRect(
+                color = Color(zoomColorULong),
+                size = Size(
+                    width = zoomWidth,
+                    height = zoomHeight
+                ),
+                topLeft = Offset(
+                    zoomXLeft,
+                    zoomYLeft
+                ),
+                cornerRadius = CornerRadius(10f),
+                style = Stroke(
+                    width = 4f,
+                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f), 5f),
+                ),
+            )
+        }
 
         Box(
             Modifier
@@ -219,4 +221,4 @@ fun drawRectangularByDragMouse() {
     }
 }
 
-class TempZoom (val zoomWidth: Float, val  zoomHeight: Float, val zoomColorULong: ULong);
+class TempZoom(val zoomWidth: Float, val zoomHeight: Float, val zoomColorULong: ULong);
