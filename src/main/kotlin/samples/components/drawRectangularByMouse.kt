@@ -27,33 +27,35 @@ import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
+const val MIN_ZOOM_SIZE: Float = 50f
+
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 fun drawRectangularByDragMouse() {
-    var xTap by remember { mutableStateOf(  0f) }
+    var xTap by remember { mutableStateOf(0f) }
     var yTap by remember { mutableStateOf(0f) }
     var tapCoordinates by remember { mutableStateOf("Tap coordinates") }
 
-    var xDragStart by  remember { mutableStateOf(0f) }
-    var yDragStart by  remember { mutableStateOf(0f) }
+    var xDragStart by remember { mutableStateOf(0f) }
+    var yDragStart by remember { mutableStateOf(0f) }
     var xyDragStartCoordinates by remember { mutableStateOf("Drag start coordinates") }
 
-    var xDragEnd by  remember { mutableStateOf(0f) }
-    var yDragEnd by  remember { mutableStateOf(0f) }
+    var xDragEnd by remember { mutableStateOf(0f) }
+    var yDragEnd by remember { mutableStateOf(0f) }
     var dragAmountCoordinates by remember { mutableStateOf("Drag end coordinates") }
 
     val interactionSource = remember { MutableInteractionSource() }
     val coroutineScope = rememberCoroutineScope()
-    var dragType by remember { mutableStateOf("Drag type") }
+    var dragType by remember { mutableStateOf("-") }
 
     var zoomXLeft by remember { mutableStateOf(0f) }
     var zoomYLeft by remember { mutableStateOf(0f) }
     var zoomWidth by remember { mutableStateOf(0f) }
     var zoomHeight by remember { mutableStateOf(0f) }
+    var zoomColorULong: ULong by remember { mutableStateOf(Color.Transparent.value) }
 
     LaunchedEffect(interactionSource) {
-        interactionSource.interactions.collect {
-                interaction ->
+        interactionSource.interactions.collect { interaction ->
             run {
                 when (interaction) {
                     is DragInteraction.Start -> {
@@ -69,11 +71,11 @@ fun drawRectangularByDragMouse() {
                     is DragInteraction.Cancel -> {
                         dragType = "cancel"
                     }
-
                 }
             }
         }
     }
+
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Color.Gray)
@@ -87,16 +89,23 @@ fun drawRectangularByDragMouse() {
                 zoomYLeft = 0f
                 zoomWidth = 0f
                 zoomHeight = 0f
+                zoomColorULong = Color.Transparent.value
             }
         }
         .pointerInput(Unit) {
             var interaction: DragInteraction.Start? = null
 
             detectDragGestures(
-                onDragStart = { offset -> run {
-                    xTap = offset.x
-                    yTap = offset.y
-                }
+                onDragStart = { offset ->
+                    run {
+                        xTap = offset.x
+                        yTap = offset.y
+
+                        zoomXLeft = offset.x
+                        zoomYLeft = offset.y
+                        zoomColorULong = Color.Transparent.value
+
+                    }
                     coroutineScope.launch {
                         interaction = DragInteraction.Start()
                         interaction?.run {
@@ -104,17 +113,38 @@ fun drawRectangularByDragMouse() {
                         }
 
                     }
-                    zoomXLeft = offset.x
-                    zoomYLeft = offset.y
                 },
                 onDrag = { change: PointerInputChange, dragAmount: Offset ->
-                    xTap += dragAmount.x
-                    yTap += dragAmount.y
+                    run {
+                        zoomWidth = 0f
+                        zoomHeight = 0f
+                        xTap += dragAmount.x
+                        yTap += dragAmount.y
 
-                    zoomWidth = -(xDragStart - xTap)
-                    zoomHeight = -(yDragStart - yTap)
+                        fun calculateCoordinates(dragCoordinate:Float, tapCoordinate: Float, minValue: Float): Float {
+                            val size = -(dragCoordinate - tapCoordinate)
+
+                            if (size.absoluteValue != dragCoordinate && size.absoluteValue != tapCoordinate && size.absoluteValue > minValue) {
+                                return size
+                            } else {
+                                return 0f
+                            }
+                        }
+                        zoomWidth = calculateCoordinates(xDragStart, xTap, MIN_ZOOM_SIZE)
+                        zoomHeight = calculateCoordinates(yDragStart, yTap, MIN_ZOOM_SIZE)
+
+                        if ((zoomWidth.absoluteValue > MIN_ZOOM_SIZE) && (zoomHeight.absoluteValue > MIN_ZOOM_SIZE)) {
+                            zoomColorULong = Color.Green.value
+                        } else {
+                            zoomColorULong = Color.Transparent.value
+                        }
+
+                    }
                 },
                 onDragCancel = {
+                    zoomWidth = 0f
+                    zoomHeight = 0f
+                    zoomColorULong = Color.Transparent.value
                     coroutineScope.launch {
                         interaction?.run {
                             interactionSource.emit(DragInteraction.Cancel(this))
@@ -122,6 +152,7 @@ fun drawRectangularByDragMouse() {
                     }
                 },
                 onDragEnd = {
+
                     coroutineScope.launch {
                         interaction?.run {
                             interactionSource.emit(DragInteraction.Stop(this))
@@ -132,30 +163,26 @@ fun drawRectangularByDragMouse() {
             )
         }
     ) {
-
-        if (zoomWidth.absoluteValue > 25 && zoomHeight.absoluteValue > 25) {
             Canvas(
                 modifier = Modifier
             ) {
-
                 drawRoundRect(
-                    color = Color.Green,
+                    color = Color(zoomColorULong),
                     size = Size(
                         width = zoomWidth,
                         height = zoomHeight
                     ),
                     topLeft = Offset(
                         zoomXLeft,
-                        zoomYLeft),
+                        zoomYLeft
+                    ),
                     cornerRadius = CornerRadius(10f),
                     style = Stroke(
                         width = 4f,
                         pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f), 5f),
                     ),
                 )
-
             }
-        }
 
         Box(
             Modifier
@@ -180,7 +207,16 @@ fun drawRectangularByDragMouse() {
         Text(yDragEnd.toString())
 
         Spacer(Modifier.height(10.dp))
-        Text(dragType)
+        Text("Drag status : $dragType")
+
+        Spacer(Modifier.height(10.dp))
+        Text("Zoom width : ${zoomWidth.absoluteValue}")
+        Text("Zoom height : ${zoomHeight.absoluteValue}")
+        Text("Zoom color : ${if (zoomColorULong == Color.Transparent.value) "Transparent" else "Green"}")
+
+        Spacer(Modifier.height(10.dp))
+
     }
 }
 
+class TempZoom (val zoomWidth: Float, val  zoomHeight: Float, val zoomColorULong: ULong);

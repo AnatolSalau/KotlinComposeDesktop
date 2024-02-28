@@ -49,7 +49,9 @@ fun drawHollowRectangular() {
         )
     }
 }
+/*
 
+ */
 @Composable
 fun drawStrokeRectangular() {
     Canvas(
@@ -69,6 +71,5 @@ fun drawStrokeRectangular() {
                 pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 25f), 25f),
             ),
         )
-
     }
 }
