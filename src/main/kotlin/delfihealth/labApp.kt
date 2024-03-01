@@ -360,7 +360,7 @@ fun drawLineChart(
                 }
                 //draw points
                 drawCircle(
-                    color = Color.Green,
+                    color = Color.Blue,
                     radius = 5f,
                     center = Offset(point.pixelX, point.pixelY)
                 )
@@ -372,6 +372,13 @@ fun drawLineChart(
                 style = Stroke(width = 3f)
             )
         })
+
+    pixelPointsLineChart?.forEach { pixelPont ->
+        run {
+            Text(modifier = Modifier
+                .offset(x = pixelPont.pixelX.dp, y = pixelPont.pixelY.dp), text = "T")
+        }
+    }
 }
 
 
