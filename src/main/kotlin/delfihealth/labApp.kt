@@ -1,4 +1,4 @@
-package samples.components
+package delfihealth
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.*
@@ -14,23 +14,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import samples.charts.drawLineChart
-import samples.charts.youtube.lineChart
 import kotlin.math.abs
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
@@ -39,7 +37,7 @@ const val MIN_ZOOM_SIZE: Float = 20f
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
-fun drawRectangularByDragMouse() {
+fun startApp() {
     var xTap by remember { mutableStateOf(0f) }
     var yTap by remember { mutableStateOf(0f) }
     var tapCoordinates by remember { mutableStateOf("Tap coordinates") }
@@ -65,7 +63,7 @@ fun drawRectangularByDragMouse() {
     var zoomButtonText by remember { mutableStateOf("Увеличить") }
 
     val graphColor = Color.Cyan
-    val transparentColor by remember { mutableStateOf( graphColor.copy(alpha = 0.5f))  }
+    val transparentColor by remember { mutableStateOf(graphColor.copy(alpha = 0.5f)) }
     LaunchedEffect(interactionSource) {
         interactionSource.interactions.collect { interaction ->
             run {
@@ -274,10 +272,11 @@ fun drawRectangularByDragMouse() {
                     Text("Zoom color : ${if (zoomColorULong == Color.Transparent.value) "Transparent" else "Green"}")
                     Spacer(Modifier.height(10.dp))
                 }
-                Column(modifier = Modifier
-                    .fillMaxSize()
-                    .border(width = 1.dp, color = Color.Black)
-                    .padding(20.dp),
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .border(width = 1.dp, color = Color.Black)
+                        .padding(20.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -288,4 +287,109 @@ fun drawRectangularByDragMouse() {
 
     }
 
+}
+
+// our values to draw
+val valuesLineChart = listOf(
+    Point(0f, 1f),
+    Point(1.5f, 1.2f),
+    Point(2f, 0.9f),
+    Point(2.5f, 2f),
+    Point(3f, 1.3f),
+    Point(3.5f, 3.2f),
+    Point(4f, 0.8f),
+)
+
+var pixelPointsLineChart: List<PixelPont>? = null
+
+//point representation
+data class Point(val x: Float, val y: Float)
+
+data class PixelPont(val valueX: Float, val valueY: Float, val pixelX: Float, val pixelY: Float)
+
+
+@Composable
+fun drawLineChart(
+    modifier: Modifier = Modifier
+        .fillMaxSize()
+        .border(width = 2.dp, color = Color.Red)
+) {
+    // find max and min value of X, we will need that later
+    val minXValue = valuesLineChart.minOf { it.x }
+    val maxXValue = valuesLineChart.maxOf { it.x }
+
+    // find max and min value of Y, we will need that later
+    val minYValue = valuesLineChart.minOf { it.y }
+    val maxYValue = valuesLineChart.maxOf { it.y }
+
+    // create Box with canvas
+    Box(modifier = modifier
+        .drawBehind
+        { // we use drawBehind() method to create canvas
+
+            // map data points to pixel values, in canvas we think in pixels
+            pixelPointsLineChart = valuesLineChart.map {
+
+                // we use extension function to convert and scale initial values to pixels
+                val pixelX = it.x.mapValueToDifferentRange(
+                    inMin = minXValue,
+                    inMax = maxXValue,
+                    outMin = 0f,
+                    outMax = size.width
+                )
+
+                // same with y axis
+                val pixelY = it.y.mapValueToDifferentRange(
+                    inMin = minYValue,
+                    inMax = maxYValue,
+                    outMin = size.height,
+                    outMax = 0f
+                )
+
+                PixelPont(valueX = it.x, valueY = it.y, pixelX = pixelX, pixelY = pixelY)
+            }
+
+            val path = Path() // prepare path to draw
+
+            // in the loop below we fill our path
+            pixelPointsLineChart!!.forEachIndexed { index, point ->
+                if (index == 0) { // for the first point we just move drawing cursor to the position
+                    path.moveTo(point.pixelX, point.pixelY)
+                } else {
+                    path.lineTo(point.pixelX, point.pixelY) // for rest of points we draw the line
+                }
+                //draw points
+                drawCircle(
+                    color = Color.Green,
+                    radius = 5f,
+                    center = Offset(point.pixelX, point.pixelY)
+                )
+            }
+            // and finally we draw the path
+            drawPath(
+                path,
+                color = Color.Blue,
+                style = Stroke(width = 3f)
+            )
+        })
+}
+
+
+
+// simple extension function that allows conversion between ranges
+fun Float.mapValueToDifferentRange(
+    inMin: Float,
+    inMax: Float,
+    outMin: Float,
+    outMax: Float
+) = (this - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
+
+@Composable
+fun drawPoint(pixelX: Float, pixelY: Float) {
+    Canvas(
+        modifier = Modifier
+            .offset { IntOffset(pixelX.roundToInt(), pixelY.roundToInt()) }
+    ) {
+
+    }
 }

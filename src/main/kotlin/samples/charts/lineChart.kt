@@ -1,6 +1,9 @@
 package samples.charts
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,7 +17,10 @@ import androidx.compose.ui.unit.dp
 data class Point(val x: Float, val y: Float)
 
 @Composable
-fun drawLineChart(modifier: Modifier = Modifier.size(300.dp, 200.dp)) {
+fun drawLineChart(modifier: Modifier = Modifier
+    .fillMaxSize()
+    .border(width = 2.dp, color = Color.Red)
+) {
     // our values to draw
     val values = listOf(
         Point(0f, 1f),
@@ -35,7 +41,8 @@ fun drawLineChart(modifier: Modifier = Modifier.size(300.dp, 200.dp)) {
 
     // create Box with canvas
     Box(modifier = modifier
-        .drawBehind { // we use drawBehind() method to create canvas
+        .drawBehind
+        { // we use drawBehind() method to create canvas
 
             // map data points to pixel values, in canvas we think in pixels
             val pixelPoints = values.map {

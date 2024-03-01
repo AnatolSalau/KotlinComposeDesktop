@@ -3,6 +3,8 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import delfihealth.startApp
+import samples.charts.drawLineChart
 import samples.components.drawHollowRectangular
 import samples.components.drawRectangularByDragMouse
 import samples.components.drawSolidRectangular
@@ -24,7 +26,8 @@ fun app() {
     //drawSolidRectangular()
     //drawHollowRectangular()
     //drawStrokeRectangular()
-    drawRectangularByDragMouse()
+    //drawRectangularByDragMouse()
+    startApp()
 }
 
 fun main() = application {
