@@ -348,7 +348,9 @@ fun drawLineChart(
 
                 PixelPont(valueX = it.x, valueY = it.y, pixelX = pixelX, pixelY = pixelY)
             }
+            /*
 
+             */
             val path = Path() // prepare path to draw
 
             // in the loop below we fill our path
